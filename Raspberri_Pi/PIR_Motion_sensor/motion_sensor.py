@@ -3,15 +3,21 @@ import time
 import RPi.GPIO as GPIO
 
 var = 0
+pairvalue = 0
 
 def Alert_Buzzer():
+    global pairvalue
     while True:
         if var==0:
-            print "No Intruders",var
             GPIO.output(3, 0)
+            if pairvalue==1:
+                pairvalue = 0
+                print "No Intruder {0} {1}".format(var,time.strftime("%H:%M:%S"))
         elif var==1:
-            print "Intruders detected",var
             GPIO.output(3, 1)
+            if pairvalue==0:
+                print "Intruder Detected {0} {1}".format(var,time.strftime("%H:%M:%S"))
+                pairvalue = 1
         time.sleep(1)
 
 def Read_Sensor():
